@@ -2,14 +2,17 @@
   "name": "page-vision",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "prettier": "prettier \"src/**/*.{ts,tsx}\" --write --config .prettierrc.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "check": "yarn lint && yarn prettier",
     "preview": "vite preview"
   },
   "dependencies": {
+    "prettier": "^3.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

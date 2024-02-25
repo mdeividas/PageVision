@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build:widget": "VITE_APP=widget vite build",
+    "build:popup": "VITE_APP=pop-up vite build",
+    "build": "tsc && yarn build:widget && yarn build:popup",
     "prettier": "prettier \"src/**/*.{ts,tsx}\" --write --config",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "check": "yarn lint && yarn prettier",

@@ -23,9 +23,9 @@ const insertCssTag = (src) => {
     const container = document.createElement('div');
     container.id = APP_ID;
 
-    insertCssTag(chrome.runtime.getURL(getSource('css/PageVisionAssets_.css')));
+    insertCssTag(chrome.runtime.getURL(getSource('/css/PageVisionAssets_.css')));
 
-    [container, createScriptTag(chrome.runtime.getURL(getSource('js/PageVisionEntry_.js')))].forEach((node) =>
+    [container, createScriptTag(chrome.runtime.getURL(getSource('/js/PageVisionEntry_.js')))].forEach((node) =>
         document.body.appendChild(node),
     );
 })();

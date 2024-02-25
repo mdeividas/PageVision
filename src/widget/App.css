@@ -1,5 +1,18 @@
-.app {
+.__PageVision_app {
   position: fixed;
   bottom: 0;
   right: 0;
+  z-index: 99999999;
+}
+
+.__PageVision_cursor {
+  top: 0;
+  border: 1px solid crimson;
+  background: rgba(220, 60, 20, 0.4);
+  border-radius: 50%;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  z-index: 99999999;
+  pointer-events: none;
 }

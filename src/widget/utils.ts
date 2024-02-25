@@ -71,3 +71,17 @@ export const getHandPoseEstimationsDistances = (data: Record<string, handPoseDet
 
     return [wristThumbDistance, wristIndexDistance, wristMiddleDistance, wristRingDistance, wristPinkyDistance];
 };
+
+export const fireClickEvent = (x: number, y: number) => {
+    const targetElement = document.elementFromPoint(x, y);
+
+    if (targetElement) {
+        const clickEvent = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+        });
+
+        targetElement.dispatchEvent(clickEvent);
+    }
+};

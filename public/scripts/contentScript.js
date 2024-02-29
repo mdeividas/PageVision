@@ -1,5 +1,9 @@
 const APP_ID = 'PageVision_';
 const PATH = 'assets/widget';
+const TYPES = {
+    AVAILABILITY_REQUEST: `${APP_ID}:AVAILABILITY:REQUEST`,
+    AVAILABILITY_RESPONSE: `${APP_ID}:AVAILABILITY:RESPONSE`,
+};
 
 const getSource = (src) => `${PATH}/${src}`;
 
@@ -29,3 +33,27 @@ const insertCssTag = (src) => {
         document.body.appendChild(node),
     );
 })();
+
+const sendMessage = (type, payload) =>
+    window.postMessage({
+        type,
+        ...(payload || {}),
+    });
+
+window.addEventListener('message', async (event) => {
+    if (event.source === window && event.data.type && event.data.type === TYPES.AVAILABILITY_REQUEST) {
+        const result = await chrome.storage.local.get('enabled');
+
+        sendMessage(TYPES.AVAILABILITY_RESPONSE, { enabled: result.enabled });
+    }
+});
+
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === 'local') {
+        for (let [key, { newValue }] of Object.entries(changes)) {
+            if (key === 'enabled') {
+                sendMessage(TYPES.AVAILABILITY_RESPONSE, { enabled: newValue });
+            }
+        }
+    }
+});

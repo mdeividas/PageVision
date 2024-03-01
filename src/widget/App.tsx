@@ -25,6 +25,7 @@ const CATEGORIES = {
 
 export const App: React.FC = () => {
     const previousCategoryRef = React.useRef<number>(0);
+    const previousYRef = React.useRef<number>(0);
     const cursorRef = React.useRef<HTMLDivElement>(document.createElement('div'));
     const [enabled, setEnabled] = React.useState<boolean>(false);
     const [isLoading, setLoading] = React.useState(true);
@@ -40,17 +41,29 @@ export const App: React.FC = () => {
             const category = KMeansCentroidsSearch(distances);
 
             const x = interpolate(data.wrist.x, 0, 300, window.innerWidth, 0);
-            const y = interpolate(data.wrist.y, 0, 240, 0, window.innerHeight);
+            const y = +interpolate(data.wrist.y, 0, 240, 0, window.innerHeight);
+
+            const diff = (y - previousYRef.current) * -1;
 
             // This indicates that user tries to resolve click event
             if (previousCategoryRef.current === CATEGORIES.FIST && category === CATEGORIES.PALM) {
-                fireClickEvent(x, y);
+                if (Math.abs(diff) < 5) {
+                    fireClickEvent(x, y);
+                }
             } else if (category === CATEGORIES.FIST) {
-                console.log('__DEBUG', 'fire scroll');
+                if (Math.abs(diff) > 5) {
+                    window.scrollTo({
+                        top: window.scrollY + diff * 8,
+                        behavior: 'smooth',
+                    });
+                }
             }
 
             previousCategoryRef.current = category;
-            cursorRef.current.style.transform = `translate(${x}px, ${y}px)`;
+            previousYRef.current = y;
+            if (Math.abs(diff) > 2) {
+                cursorRef.current.style.transform = `translate(${x}px, ${window.scrollY + y}px)`;
+            }
         }
 
         if (enabled) {
@@ -139,7 +152,6 @@ export const App: React.FC = () => {
 
     return (
         <div className="__PageVision_app">
-            <button onClick={() => window.scrollTo(window.scrollX, 0)}>Click me!</button>
             {!error && isLoading && <div className="__PageVision_overlay">Loading...</div>}
             {error && <div className="__PageVision_overlay">{error}</div>}
             <video ref={videoRef} autoPlay playsInline muted width={340} height={240} />

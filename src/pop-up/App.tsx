@@ -28,7 +28,13 @@ export const App: React.FC = () => {
                 <button onClick={toggleAvailability}>{enabled ? 'Disable' : 'Enable'}</button>
             </div>
             <hr />
-            TODO description
+            If you liked this project and want to explore the details further, you can check out:
+            <hr />
+            This experimental project explores the use of AI.
+            <ul>
+                <li>We don't collect any data for analytics.</li>
+                <li>We're using AI on the client side, meaning that video captions are not sent anywhere.</li>
+            </ul>
         </div>
     );
 };
